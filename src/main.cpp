@@ -34,9 +34,13 @@ int main()
 
   PID pid;
   // TODO: Initialize the pid variable.
-  pid.Init(0.10, 0.00000, 3.5);
+//  pid.Init(0.3, 0.0000, 8.5);
+  pid.Init(0.3, 0.0008, 5.0);
 
-  h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
+  PID throttle_pid;
+  throttle_pid.Init(1.4, 0.0, 0.0);
+
+  h.onMessage([&pid, &throttle_pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
@@ -49,8 +53,8 @@ int main()
         if (event == "telemetry") {
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<std::string>());
-          double speed = std::stod(j[1]["speed"].get<std::string>());
-          double angle = std::stod(j[1]["steering_angle"].get<std::string>());
+//          double speed = std::stod(j[1]["speed"].get<std::string>());
+//          double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
           /*
           * TODO: Calcuate steering value here, remember the steering value is
@@ -60,16 +64,20 @@ int main()
           */
           pid.UpdateError(cte);
           steer_value = pid.TotalError();
-
-          double throttle = 0.5;
-          if (fabs(steer_value) < 0.1) {
-            throttle = 0.90;
-          }else if (fabs(steer_value) > 0.2) {
-            throttle = 0.2;
+          if (steer_value > 1.0) {
+            steer_value = 1.0;
+          } else if (steer_value < -1.0) {
+            steer_value = -1.0;
           }
-          
-          // DEBUG
-//          std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
+
+          double maxThrottle = 0.6;
+          double maxSteerValue = 1.0;
+
+          double throttle = maxThrottle - (fabs(steer_value) / maxSteerValue * maxThrottle);
+
+//          throttle_pid.UpdateError(steer_value);
+//          std::cout << speed << " steer_value " << steer_value << " throttle: " << throttle << std::endl;
+//          throttle = throttle - fabs(throttle_pid.TotalError());
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
