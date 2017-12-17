@@ -31,6 +31,8 @@ The more rapid the change, the greater the controlling or dampening effect.
 ## Fine Tune
 ![Fine Tune PID](/doc/FineTunePID.gif)
 
+[GIF from Wikipedia](https://en.wikipedia.org/wiki/PID_controller)
+
 * Set Ki and Kd to zero, throttle to 0.1, change P so that car start to oscillate,
 Higher P will more sensitive to errors which means able to handle sharp turns.
 My code 0.3 makes car able to drive through the whole track.
