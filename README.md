@@ -71,11 +71,12 @@ double throttle = maxThrottle - (fabs(steer_value) / maxSteerValue * maxThrottle
 
 ## Result
 
-Most of the time, car able to driving safely between 50-60 MPH, while see a large
-steer angle, car will reduce the speed to 40-50 MPH.
+Most of the time, the car able to driving safely between 50-60 MPH, 
+while seeing a large steer angle, the car will reduce the speed to 40-50 MPH.
 
 ![Self_driving_car_PID_Controller](/doc/Self_driving_car_PID_Controller.gif)
 
+![Youtube Version](https://youtu.be/aAvl-VTwDDs)
 
 ## Dependencies
  
