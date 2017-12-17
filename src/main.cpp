@@ -53,7 +53,7 @@ int main()
         if (event == "telemetry") {
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<std::string>());
-//          double speed = std::stod(j[1]["speed"].get<std::string>());
+          double speed = std::stod(j[1]["speed"].get<std::string>());
 //          double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
           /*
@@ -63,17 +63,24 @@ int main()
           * another PID controller to control the speed!
           */
           pid.UpdateError(cte);
-          steer_value = pid.TotalError();
+          steer_value = - pid.TotalError();
+//          std::cout << steer_value << std::endl;
+
+
+
           if (steer_value > 1.0) {
             steer_value = 1.0;
           } else if (steer_value < -1.0) {
             steer_value = -1.0;
           }
 
+
           double maxThrottle = 0.6;
           double maxSteerValue = 1.0;
 
           double throttle = maxThrottle - (fabs(steer_value) / maxSteerValue * maxThrottle);
+//          std::cout << throttle << std::endl;
+          std::cout << speed << std::endl;
 
 //          throttle_pid.UpdateError(steer_value);
 //          std::cout << speed << " steer_value " << steer_value << " throttle: " << throttle << std::endl;
