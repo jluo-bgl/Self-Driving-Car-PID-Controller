@@ -6,6 +6,13 @@ Self-Driving Car Engineer Nanodegree Program
 
 ## PID Controller
 
+A proportional–integral–derivative controller (PID controller or three term controller) is a control 
+loop feedback mechanism widely used in industrial control systems and a variety of other applications 
+requiring continuously modulated control. A PID controller continuously calculates an error 
+value (CTE in our case) as the difference between a desired setpoint (SP) and a measured process 
+variable (PV) and applies a correction based on proportional, integral, 
+and derivative terms (denoted P, I, and D respectively) which give the controller its name.
+
 The P, or "proportional", component had the most directly observable effect 
 on the car's behavior. It causes the car to steer proportional (and opposite) 
 to the car's distance from the lane center (which is the CTE) - if the car is 
@@ -33,18 +40,19 @@ The more rapid the change, the greater the controlling or dampening effect.
 
 [GIF from Wikipedia](https://en.wikipedia.org/wiki/PID_controller)
 
+#### Set Proportional Component
 * Set Ki and Kd to zero, throttle to 0.1, change P so that car start to oscillate,
 Higher P will more sensitive to errors which means able to handle sharp turns.
 My code 0.3 makes car able to drive through the whole track.
 
-#### Set Integral
+#### Set Integral Component
 
 Observe accumulation of integral, if integral set as zero, run 1 round it will
 accumulate to > 1200.
 While I increase Ki to 0.0008, the accumulation seems cancel each other on the end 
 of th round.
 
-#### Set Derivative
+#### Set Derivative Component
 Kd will make the car drive more stable, reduce oscillate. Set Kd to 5.0 seems
 make my car stable, I found the bridge part is a very good place to test Kd, 
 regardless what's the entry position, by the end of the bridge the angle
